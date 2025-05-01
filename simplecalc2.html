@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      padding: 10px 20px;
+      background: linear-gradient(to right, #8360c3, #2ebf91);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .header a {
+      font-size: 26px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+    .header a:hover {
+      color: #4316d5;
+    }
+   
+    .calc {
+      background: linear-gradient(to right, #0b8ae0, #2c3e50);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(10, 10, 10, 0.4);
+      width: 320px;
+
+    }
+    #Equation {
+      width: 100%;
+      height: 50px;
+      font-size: 28px;
+      text-align: right;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      background-color: #e9760a;
+      color: white;
+      border: 2px solid #0b8ae0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td {
+      width: 20%;
+      padding: 5px;
+    }
+    button {
+      width: 100%;
+      height: 50px;  
+      font-size: 20px;
+      border-radius: 12px;
+      border: none;
+      background-color: #9b0ce8;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      box-shadow: 0 4px 8px rgba(10, 10, 10, 0.4);
+
+
+    }
+    button:hover {
+      background-color: #7a0bb8;
+    }
+    .clear {
+      background-color: #e74c3c;
+    }
+    .clear:hover {
+      background-color: #c0392b;
+    }
+    .equal {
+      background-color: #2e68cc;
+    }
+    .equal:hover {
+      background-color: #ae2783;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="#">Simple Calculator</a>
+  </header>
+
+  <main>
+    <section class="calc">
+      <input type="text" id="Equation" placeholder="0" disabled />
+      <table>
+        <tr>
+
+          <td><button onclick="clearALL()">AC</button></td>
+          <td><button  onclick="eq.value = Math.sqrt(eq.value)">&Sqrt;</button></td>
+          <td><button data-value="(" class="in">(</button></td>
+          <td><button data-value=")"class="in">)</button></td>
+          <td><button data-value= "/" class="in">/</button></td>
+        </tr>
+        <tr>
+          <td><button data-value='7'class="in">7</button></td>
+          <td><button data-value='8' class="in">8</button></td>
+          <td><button data-value='9' class="in">9</button></td>
+          <td><button data-value='*' class="in">*</button></td>
+          <td><button data-value='%' class="in">%</button></td>
+        </tr>
+        <tr>
+          <td><button data-value='4' class="in">4</button></td>
+          <td><button data-value='5' class="in">5</button></td>
+          <td><button data-value='6' class="in">6</button></td>
+          <td><button data-value='-' class="in">-</button></td>
+          <td><button data-value='**' class="in"> ^ </button></td>
+        </tr>
+        <tr>
+          <td><button data-value='1' class="in">1</button></td>
+          <td><button data-value='2' class="in">2</button></td>
+          <td><button data-value='3' class="in">3</button></td>
+          <td><button data-value='+' class="in">+</button></td>
+          <td><button onclick="calculate()">=</button></td>  
+
+        </tr>
+        <tr>
+          <td><button data-value= "00" class="in">00</button></td>
+          <td><button data-value= "0" class="in">0</button></td>
+          <td><button data-value= "." class="in">.</button></td>
+          <td colspan="2"><button onclick="clearone()">C</button></td>  
+        </tr>
+      </table>
+    </section>
+  </main>
+  <script>
+
+let eq = document.getElementById("Equation");
+let inputs = document.querySelectorAll('.in');
+console.log(inputs.length );
+
+inputs.forEach( x => {
+x.addEventListener("click",()=>{
+
+  eq.value += x.getAttribute("data-value")
+})
+
+})
+
+
+function calculate() {
+  try {
+    let expression = eq.value;
+
+    // Convert 50% to (50/100)
+    expression = expression.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
+
+    // Insert * between closing ) and number if missing, e.g., (50/100)2 → (50/100)*2
+    expression = expression.replace(/\)(\d|\()/g, ')*$1');
+
+    eq.value = eval(expression);
+  } catch (e) {
+    eq.value = "Error";
+  }
+}
+
+function clearALL() {
+eq.value = "";
+}
+function clearone() {
+eq.value = eq.value.slice(0,-1)
+}
+
+  </script>
+</body>
+</html>
